@@ -14,6 +14,7 @@ import GitHub from "../components/GitHub.jsx";
 import HeroCamera from "../components/HeroCamera.jsx";
 import InteractiveParticles from "../components/InteractiveParticles.jsx";
 import Button from "../components/Button.jsx";
+import InteractiveParticlesV2 from "../components/InteractiveParticlesV2.jsx";
 
 
 const Hero = () => {
@@ -84,7 +85,7 @@ const Hero = () => {
                             <Target position={Sizes.targetPosition}/>
                             <ReactLogo position={Sizes.reactLogoPosition} scale={Sizes.reactScale}/>
                             <Cube position={Sizes.cubePosition} scale={Sizes.CubeScale}/>
-                            <InteractiveParticles position={Sizes.ringPosition}/>
+                            <InteractiveParticlesV2 position={Sizes.ringPosition}/>
                             <Python
                                 position={Sizes.pythonLogoPosition}
                                 scale={Sizes.PythonLogoScale}

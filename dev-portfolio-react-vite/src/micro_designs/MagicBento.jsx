@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState, useCallback } from "react";
-import { gsap } from "gsap";
+import {useRef, useEffect, useState, useCallback} from "react";
+import {gsap} from "gsap";
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
@@ -111,8 +111,8 @@ const ParticleCard = ({
     const initializeParticles = useCallback(() => {
         if (particlesInitialized.current || !cardRef.current) return;
 
-        const { width, height } = cardRef.current.getBoundingClientRect();
-        memoizedParticles.current = Array.from({ length: particleCount }, () =>
+        const {width, height} = cardRef.current.getBoundingClientRect();
+        memoizedParticles.current = Array.from({length: particleCount}, () =>
             createParticleElement(
                 Math.random() * width,
                 Math.random() * height,
@@ -158,8 +158,8 @@ const ParticleCard = ({
 
                 gsap.fromTo(
                     clone,
-                    { scale: 0, opacity: 0 },
-                    { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" }
+                    {scale: 0, opacity: 0},
+                    {scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)"}
                 );
 
                 gsap.to(clone, {
@@ -335,7 +335,7 @@ const ParticleCard = ({
         <div
             ref={cardRef}
             className={`${className} relative overflow-hidden`}
-            style={{ ...style, position: "relative", overflow: "hidden" }}
+            style={{...style, position: "relative", overflow: "hidden"}}
         >
             {children}
         </div>
@@ -406,7 +406,7 @@ const GlobalSpotlight = ({
                 return;
             }
 
-            const { proximity, fadeDistance } =
+            const {proximity, fadeDistance} =
                 calculateSpotlightValues(spotlightRadius);
             let minDistance = Infinity;
 
@@ -487,10 +487,10 @@ const GlobalSpotlight = ({
     return null;
 };
 
-const BentoCardGrid = ({ children, gridRef }) => (
+const BentoCardGrid = ({children, gridRef}) => (
     <div
         className="bento-section grid gap-2 p-3 max-w-[54rem] select-none relative"
-        style={{ fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)" }}
+        style={{fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)"}}
         ref={gridRef}
     >
         {children}
