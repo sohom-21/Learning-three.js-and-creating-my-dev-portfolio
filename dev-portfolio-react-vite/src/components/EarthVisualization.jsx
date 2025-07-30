@@ -10,8 +10,8 @@ function useFresnelMaterial({ rimHex = 0x0088ff, facingHex = 0x000000 } = {}) {
       color1: { value: new THREE.Color(rimHex) },
       color2: { value: new THREE.Color(facingHex) },
       fresnelBias: { value: 0.1 },
-      fresnelScale: { value: 1.0 },
-      fresnelPower: { value: 4.0 },
+      fresnelScale: { value: 1.4 },
+      fresnelPower: { value: 6.0 },
     };
 
     const vertexShader = `
@@ -131,17 +131,19 @@ function Earth() {
   // Animation
   useFrame((state, delta) => {
     if (earthGroupRef.current) {
-      earthGroupRef.current.rotation.y += 0.001;
+      earthGroupRef.current.rotation.y += 0.0013;
     }
     if (cloudsRef.current) {
-      cloudsRef.current.rotation.y += 0.0010;
+      cloudsRef.current.rotation.y += 0.0004;
+      // cloudsRef.current.rotation.x += 0.0004;
+      cloudsRef.current.rotation.z += 0.0004;
     }
   });
 
   return (
     <group ref={earthGroupRef} rotation-z={-23.4 * Math.PI / 180}>
       {/* Main Earth */}
-      <mesh ref={earthRef}>
+      <mesh ref={earthRef} receiveShadow={true}>
         <icosahedronGeometry args={[1, 15]} />
         <meshPhongMaterial
           map={earthTexture}
@@ -156,9 +158,24 @@ function Earth() {
           <meshBasicMaterial
             map={lightsTexture}
             blending={THREE.AdditiveBlending}
+            transparent={true}
+            opacity={0.7}
+            depthWrite={false}
           />
         </mesh>
         
+      {/* Clouds */}
+      <mesh ref={cloudsRef} scale={1.009} castShadow={true}>
+        <icosahedronGeometry args={[1, 15]} />
+        <meshPhongMaterial
+          map={cloudTexture}
+          alphaMap={cloudAlphaTexture}
+          transparent
+          opacity={0.7}
+          blending={THREE.AdditiveBlending}
+          depthWrite={true}
+        />
+
         {/* Earth Glow */}
         <mesh scale={1.02}>
           <icosahedronGeometry args={[1, 15]} />
@@ -166,16 +183,6 @@ function Earth() {
         </mesh>
       </mesh>
 
-      {/* Clouds */}
-      <mesh ref={cloudsRef} scale={1.006}>
-        <icosahedronGeometry args={[1, 15]} />
-        <meshStandardMaterial
-          map={cloudTexture}
-          alphaMap={cloudAlphaTexture}
-          transparent
-          opacity={0.8}
-          blending={THREE.AdditiveBlending}
-        />
       </mesh>
     </group>
   );
@@ -184,17 +191,18 @@ function Earth() {
 // Main App Component
 export default function EarthVisualization() {
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#000' }}>
-      <Canvas>
+    <div style={{ width: '100%', height: '100%', minHeight: '300px', maxHeight: '600px', background: '#000' }}>
+      <Canvas shadows={{type: THREE.PCFSoftShadowMap}}>
         <color attach="background" args={['#000000']} />
         
-        <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={75} />
+        <PerspectiveCamera makeDefault position={[0, 0, 4]} fov={75} />
         
         {/* Lighting */}
         <directionalLight 
           position={[-2, -0.5, 1.5]} 
           intensity={2.0} 
           color={0xffffff} 
+          castShadow={true} 
         />
         
         {/* Earth */}

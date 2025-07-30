@@ -102,7 +102,7 @@ const Hero = () => {
             </div>
             <div className="absolute bottom-2 left-0 right-0 w-full z-10 c-space">
                 <a href="#" className="w-fit">
-                    <Button name="let's work together" isBeam containerClass='sm:w-fit w-full sm:min-w-96 border border-white/20 bg-white/10 backdrop-blur-xl font-medium transition hover:bg-white/20 hover:text-white shadow-lg'/>
+                    <Button name="let's work together" isBeam containerClass='sm:w-fit w-full sm:min-w-80 border border-white/20 bg-white/10 backdrop-blur-xl font-medium transition hover:bg-white/20 hover:text-white shadow-lg'/>
                 </a>
             </div>
         </section>

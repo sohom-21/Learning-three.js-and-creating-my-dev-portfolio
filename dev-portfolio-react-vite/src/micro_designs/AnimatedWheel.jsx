@@ -78,7 +78,7 @@ const AnimatedWheel = () => {
     };
 
     return (
-        <div className="relative mx-auto mt-16">
+        <div className="relative mx-auto mt-4">
             {/* Theme Toggle */}
             <button
                 onClick={toggleTheme}

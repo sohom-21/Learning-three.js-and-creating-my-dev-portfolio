@@ -1,4 +1,4 @@
-const ShinyText = ({ text, disabled = false, speed = 5, className = '' }) => {
+const ShinyText = ({ text, disabled = false, speed = 5, className = '' ,isBeam}) => {
     const animationDuration = `${speed}s`;
 
     return (
@@ -11,10 +11,10 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = '' }) => {
                 animationDuration: animationDuration,
             }}
         >
-            <span className='relative flex h-3 w-3'>
+            { isBeam && <span className='relative flex h-3 w-3'>
                 <span className='btn-ping'></span>
                 <span className='btn-ping_dot'></span>
-            </span>
+            </span> }
             {text}
         </div>
     );

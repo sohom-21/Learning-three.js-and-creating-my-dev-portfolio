@@ -22,6 +22,7 @@ const material = new THREE.MeshPhongMaterial({
     bumpScale: 0.05,
 });
 const mesh = new THREE.Mesh(geometry, material);
+mesh.receiveShadow = true; // Earth will receive shadows from the clouds
 // scene.add(mesh);
 
 const lightsMat = new THREE.MeshBasicMaterial({
@@ -51,6 +52,7 @@ const cloudMat = new THREE.MeshStandardMaterial({
     transparent: true,
 })
 const cloudMesh = new THREE.Mesh(geometry, cloudMat);
+cloudMesh.castShadow = true; 
 cloudMesh.scale.setScalar(1.006)
 earthGroup.add(cloudMesh);
 
@@ -61,13 +63,18 @@ mesh.add(earthGlow);
 earthGlow.scale.setScalar(1.02)
 
 // 4. Lighting
-const sunlight = new THREE.DirectionalLight(0xffffff, 2.0);
+const sunlight = new THREE.DirectionalLight(0xffffff, 1);
+cloudMesh.castShadow = true; 
 sunlight.position.set(-2, -0.5, 1.5);
 scene.add(sunlight);
 
 // 5. Renderer
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(window.devicePixelRatio);
+// renderer.setClearColor(0x000000, 1); // Set background color to black
 // renderer.render(scene, camera);
 
 // 6.controls
@@ -82,7 +89,7 @@ controls.enablePan = true;
 function animate() {
     requestAnimationFrame(animate);
     earthGroup.rotation.y += 0.001;
-    cloudMesh.rotation.y += 0.0010;
+    cloudMesh.rotation.y += 0.0004;
     renderer.render(scene, camera);
 }
 animate();
