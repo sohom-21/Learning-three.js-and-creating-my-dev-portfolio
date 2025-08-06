@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Across The Multiverse - An in-browser, freely explorable, 3D game across infinite universes procedurally generated.</title>
+    <meta name="description" content="An in-browser, freely explorable, 3D game across infinite universes procedurally generated.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Across The Multiverse">
+    <meta property="og:description" content="An in-browser, freely explorable, 3D game across infinite universes procedurally generated.">
+    <meta property="og:url" content="https://across-multiverse.com/">
+    <meta property="og:site_name" content="Across The Multiverse">
+    <meta property="og:image" content="https://across-multiverse.com/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Across The Multiverse">
+    <meta name="twitter:description" content="An in-browser, freely explorable, 3D game across infinite universes procedurally generated.">
+    <meta name="twitter:image" content="https://across-multiverse.com/preview.jpg">
+    <meta name="twitter:creator" content="@jesuisundev">
+    <meta name="author" content="Mehdi ZOGHLAMI">
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GQV000P6CS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GQV000P6CS');
+    </script>
+</head>
+
+<body id="global">
+    <div id="blackwall"></div>
+    <div id="whitewall"></div>
+    <div id="story"></div>
+    <div id="intro">
+        <div id="title" class="fadeOut">
+            <h1 style="display: none;">Across The Multiverse</h1>
+            <!-- webpackIgnore: true -->
+            <img id="logo" src="/ui/logo.png" alt="Across The Multiverse" />
+        </div>
+        <div id="description" class="fadeOut">
+            <hr />
+            An in-browser, freely explorable, 3D game across infinite universes procedurally generated.<br />
+            <strong>Go from universe to universe and discover the origin of everything.</strong><br />
+            A four chapter story with an epic revelation at the end.
+        </div>
+        <div id="notice" class="fadeOut">
+            <div id="sound">
+                <div class="dashed-circle">
+                    <div class="circle">
+                        <!-- webpackIgnore: true -->
+                        <img id="headphone" src="/ui/headphone.svg" alt="headphone" />
+                    </div>
+                </div>
+            </div>
+            <p id="turnup">
+                <strong>Turn up sound</strong> <br />before launch
+            </p>
+        </div>
+        <div id="entrypoint" class="fadeOut">
+            <div id="mode">
+                <br /><br />
+                <a class="mode-select" id="storyMode" href="">
+                    STORY MODE
+                </a>
+                <br /><br /><br />
+                <span>Solo - Narrative story with exclusive ending</span>
+                <br /><br /><br />
+                <a class="mode-select" id="discoveryMode" href="">
+                    DISCOVERY MODE
+                </a>
+                <br /><br /><br />
+                <span>Multiplayer - Metaverse free exploration</span>
+                <br />
+            </div>
+            <div id="launcher">
+                <img id="loading" src="https://i.stack.imgur.com/qq8AE.gif" width="32" />
+                <br /><br />
+                <a id="launch" href="" class="fadeOut">
+                    LAUNCH
+                </a>
+                <br />
+
+                <div id="highend">
+                    <br /><br /><br /><br />
+                    <a id="launchUltra" href="" class="fadeOut">
+                        LAUNCH - FULL RESOLUTION
+                    </a>
+                    <br /><br /><br />
+                    <span id="warning-pc">only for high-end hardware</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div id="credits">
+        <div class="title">
+            CREDITS
+        </div>
+        <div class="content">
+            <!--<br />
+            <a id="source" href="https://github.com/jesuisundev/acrossthemultiverse">
+                see source code and license
+            </a>-->
+            <br />
+            <div id="share">
+                SHARE
+                <ul class="bwp-single-post-share-list list-unstyled">
+                    <li>
+                        <a href="https://twitter.com/share?url=https://across-multiverse.com/&amp;text=Across The Multiverse - An in-browser, freely explorable, 3D game across infinite universes procedurally generated." rel="nofollow noopener" target="_blank" class="bwp-twitter-share"
+                            onclick="window.open('https://twitter.com/share?url=https://across-multiverse.com/&amp;text=Across The Multiverse - An in-browser, freely explorable, 3D game across infinite universes procedurally generated.', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.facebook.com/sharer.php?u=https://across-multiverse.com/&amp;t=Across%20The%20Multiverse%20-%20An%20in-browser,%20freely%20explorable,%203D%20game%20across%20infinite%20universes%20procedurally%20generated." rel="nofollow noopener" target="_blank" class="bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u=https://across-multiverse.com/&amp;t=Across%20The%20Multiverse%20-%20An%20in-browser,%20freely%20explorable,%203D%20game%20across%20infinite%20universes%20procedurally%20generated.', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.facebook.com/dialog/send?link=https://across-multiverse.com/&amp;app_id=844511858946898&amp;redirect_uri=https://across-multiverse.com/" rel="nofollow noopener" target="_blank" class="bwp-messenger-share" onclick="window.open('https://www.facebook.com/dialog/send?link=https://across-multiverse.com/&amp;app_id=844511858946898&amp;redirect_uri=https://across-multiverse.com/', 'Whatapp', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                            <i class="fab fa-facebook-messenger"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://wa.me/?text=https://across-multiverse.com/" rel="nofollow noopener" target="_blank" class="bwp-whatapp-share" onclick="window.open('https://wa.me/?text=https://across-multiverse.com/', 'Whatapp', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://across-multiverse.com/" rel="nofollow noopener" target="_blank" class="bwp-linkedin-share" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://across-multiverse.com/&amp;media=true', 'Linkedin', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.reddit.com/submit?url=https://across-multiverse.com/&amp;title=Across%20The%20Multiverse%20-%20An%20in-browser,%20freely%20explorable,%203D%20game%20across%20infinite%20universes%20procedurally%20generated." rel="nofollow noopener" target="_blank" class="bwp-reddit-share" onclick="window.open('https://www.reddit.com/submit?url=https://across-multiverse.com/&amp;title=Across%20The%20Multiverse%20-%20An%20in-browser,%20freely%20explorable,%203D%20game%20across%20infinite%20universes%20procedurally%20generated.', 'Reddit', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                            <i class="fab fa-reddit-alien"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="creator">
+                <div class="content">
+                    <div id="picture">
+                        <a href="https://twitter.com/jesuisundev">
+                            <img src="https://pbs.twimg.com/profile_images/1203463243429302273/iBWJdFfK_400x400.jpg" alt="Mehdi ZOGHLAMI" />
+                        </a>
+                    </div>
+                    <div id="contact">
+                        <h4>
+                            Mehdi ZOGHLAMI
+                        </h4>
+                        <span>@jesuisundev</span>
+                        <span>vooodoo.eth</span>
+                        <ul>
+                            <li>
+                                <a href="https://twitter.com/jesuisundev">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/in/jesuisundev/">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            <li>
+                                <a href="mailto:admin@jesuisundev.com">
+                                    <i class="fas fa-envelope-square"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear:both;" />
+            </div>
+            <div id="music">
+                <h3>
+                    MUSIC
+                </h3>
+                <ul>
+                    <li>
+                        <a href="https://open.spotify.com/track/5CHa3MCTt5Aoi4G2HcfVMH?si=74af4b8a258b463f">Transcendent</a> - <a href="http://www.joelnielsen.com/">Joel Nielsen</a>
+                    </li>
+                    <li>
+                        <a href="https://open.spotify.com/track/28wnui8CI94RSAfue7vUOM?si=d438b349a0be4078">I Walk With Ghosts</a> - <a href="https://www.scottbuckley.com.au/">Scott Buckley</a>
+                    </li>
+                    <li>
+                        <a href="https://open.spotify.com/track/7FRUk1AA7MjRb5kKSTFTFU?si=88021b37a6c4443e">Discovery</a> - <a href="https://www.scottbuckley.com.au/">Scott Buckley</a>
+                    </li>
+                    <li>
+                        <a href="https://open.spotify.com/track/6Nc5tcIEEZtSOoWXFVWzUX?si=c30ad4934fd7482b">Celestial</a> - <a href="https://www.scottbuckley.com.au/">Scott Buckley</a>
+                    </li>
+                    <li>
+                        <a href="https://open.spotify.com/track/77SWkPBTYUu8uQ5KKIvHH5?si=aee4c20265ae44fa">Omega</a> - <a href="https://www.scottbuckley.com.au/">Scott Buckley</a>
+                    </li>
+                    <li>
+                        <a href="https://open.spotify.com/track/0MvA4pbottTXYyCuPjRG2l?si=934c55ef0a724f5e">Into the Night</a> - <a href="https://melodysheep.bandcamp.com/">Melodysheep</a>
+                    </li>
+                </ul>
+                <p class="cc">under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">creative commons (CC BY-NC-SA 3.0)</a> license</p>
+            </div>
+            <br />
+        </div>
+    </div>
+    <nav id="nav">
+        <ul id="menu">
+            <li class="cell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="hideBtn" src="/ui/hide.png" alt="move" />
+                </div>
+                <span class="description">Hide UI</span>
+            </li>
+            <li class="cell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="moveBtn" src="/ui/move.png" alt="move" />
+                </div>
+                <span class="description">Move</span>
+            </li>
+            <li class="cell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="lookBtn" src="/ui/look.png" alt="move" />
+                </div>
+                <span class="description">Look</span>
+            </li>
+            <li class="cell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="muteBtn" src="/ui/mute.png" alt="move" />
+                </div>
+                <span class="description">Mute</span>
+            </li>
+            <li class="cell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="creditsBtn" src="/ui/credits.png" alt="move" />
+                </div>
+                <span class="description">Credits</span>
+            </li>
+            <li class="cell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="echapBtn" src="/ui/esc.png" alt="echap" />
+                </div>
+                <span class="description">Quit</span>
+            </li>
+            <li class="cell" id="skipCell">
+                <div class="button">
+                    <!-- webpackIgnore: true -->
+                    <img id="skipBtn" src="/ui/skip.png" alt="move" />
+                </div>
+                <span class="description">Skip</span>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="movement-pad">
+        <!-- webpackIgnore: true -->
+        <div id="movement-pad-region" style="background:radial-gradient(rgba(218, 225, 230, 0.25) 5%, rgba(218, 225, 230, 0.50) 95%), url('/ui/nav.png') center center no-repeat;"></div>
+        <!-- webpackIgnore: true -->
+        <div id="movement-pad-handle" style="background: radial-gradient(rgba(218, 225, 230, 0.25) 5%, rgba(218, 225, 230, 0.50) 95%), url('/ui/nav.png') center center no-repeat"></div>
+    </div>
+    <div id="rotation-pad">
+        <!-- webpackIgnore: true -->
+        <div id="rotation-pad-region" style="background:radial-gradient(rgba(218, 225, 230, 0.25) 5%, rgba(218, 225, 230, 0.50) 95%)"></div>
+        <!-- webpackIgnore: true -->
+        <div id="rotation-pad-handle" style="background: radial-gradient(rgba(218, 225, 230, 0.25) 5%, rgba(218, 225, 230, 0.50) 95%), url('/ui/nav.png') center center no-repeat"></div>
+    </div>
+    
+</body>
+
+</html>

@@ -1,10 +1,17 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import spline from './spline';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+// import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+// import { Loader } from 'three';
 
 // 1. Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#f0f0f0');
+scene.background = new THREE.Color('#000000');
+scene.fog = new THREE.FogExp2(0x000000, 0.5 ); // Add fog for depth effect
 
 // 2. Camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -12,20 +19,67 @@ camera.position.z = 5;
 
 // 3. Object
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshLambertMaterial({ color: '#468585', emissive: '#468585' });
-const cube = new THREE.Mesh(geometry, material);
+  //creating a line using the spline.js file
+const points = spline.getPoints(100); // Get 100 points along the spline
+const geometry = new THREE.BufferGeometry().setFromPoints(points);
+// const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+// const line = new THREE.Line(geometry, material);
+//scene.add(line); // Adding the spline line to the scene
 
-scene.add(cube);
+
+//creating a tube geometry along the spline
+const tubeGeometry = new THREE.TubeGeometry(spline, 250, 0.65, 16, true);
+// const tubeMaterial = new THREE.MeshStandardMaterial({
+//   side: THREE.DoubleSide,
+//   wireframe:true,
+//   color: 0x0099ff,
+// });
+// const tubeMesh = new THREE.Mesh(tubeGeometry, tubeMaterial);
+// scene.add(tubeMesh); // Adding the tube mesh to the scene
+
+  // try to make a edge geometry from the tube geometry
+const edgeGeometry = new THREE.EdgesGeometry(tubeGeometry, 0.2);
+const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xfffff0});
+const tubeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+scene.add(tubeLines); // Adding the edge mesh to the scene 
+
 // 4. Lighting
-const light = new THREE.SpotLight(0x006769, 100);
-light.position.set(1, 1, 1);
+const light = new THREE.HemisphereLight(0xffffff, 0x444444);
 scene.add(light);
+
+// fly through the tube geometry to create the wormhole effect
+function updateCamera(t){
+  const time = t * 0.1; // Get current time in seconds 
+  const looptime = 20 * 1000;
+  const point = (time % looptime) / looptime; // Normalize time to a value between 0 and 1
+  const pos = tubeGeometry.parameters.path.getPointAt(point); // Get point on the spline at time t
+  const lookAt = tubeGeometry.parameters.path.getPointAt((point + 0.03) % 1);
+  camera.position.copy(pos); // Get the next point to look at
+  camera.lookAt(lookAt); // Set camera to look at the next point
+}
+
 
 // 5. Renderer
 const  renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio); // Useful for high DPI displays
+renderer.toneMapping = THREE.ACESFilmicToneMapping; // Set tone mapping for better color reproduction
+renderer.toneMappingExposure = 1.0; // Adjust exposure for the scene
+renderer.shadowMap.enabled = true; // Enable shadows
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Set shadow map type for softer shadows
+renderer.setClearColor(0x000000, 1); // Set clear color to black
+renderer.physicallyCorrectLights = true; // Enable physically correct lighting
+renderer.outputColorSpace = THREE.SRGBColorSpace; // Set output color space for correct color rendering
+
+// post-processing
+const renderScene = new RenderPass(scene, camera);
+const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 100);
+bloomPass. threshold = 0.002;
+bloomPass.strength = 3.5;
+bloomPass. radius = 0;
+const composer = new EffectComposer(renderer);
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
 
 // 6. Orbit Controls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -34,16 +88,13 @@ controls.dampingFactor = 0.05;
 controls.enableZoom = true;
 controls.enablePan = true;
 
-// Adding objects to the scene
-scene.add(cube);
 
 // 7. Animation Loop
-const animate = () => {
-    requestAnimationFrame(animate);
-    cube.rotation.x += 0.001;
-    cube.rotation.y += 0.001;
-    controls.update();
-    renderer.render(scene, camera);
+const animate = ( t = 0 ) => {
+  requestAnimationFrame(animate);
+  updateCamera(t)
+  // controls.update();
+  renderer.render(scene, camera);
 };
 // Handle window resize -- the animation should adapt to the new size of the window if it changes
 
