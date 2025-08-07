@@ -4,7 +4,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {TextGeometry} from 'three/addons/geometries/TextGeometry.js';
 import getBgSphere from './getBgsphere';
-
+import './style.css';
 // 1. Create a scene
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
@@ -22,7 +22,7 @@ const icoMat = new THREE.MeshStandardMaterial({
 const icoMesh = new THREE.Mesh(icoGeo, icoMat);
 scene.add(icoMesh);
 
-const bgSphere = getBgSphere();
+const bgSphere = getBgSphere({hue: 0.6});
 scene.add(bgSphere);
 
 // 4. lights
@@ -30,9 +30,17 @@ const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x000000, 1);
 scene.add(hemisphereLight);
 
 // 5. Create a renderer
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const  renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+renderer.setPixelRatio(window.devicePixelRatio); // Useful for high DPI displays
+renderer.toneMapping = THREE.ACESFilmicToneMapping; // Set tone mapping for better color reproduction
+renderer.toneMappingExposure = 1.0; // Adjust exposure for the scene
+renderer.shadowMap.enabled = true; // Enable shadows
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Set shadow map type for softer shadows
+renderer.setClearColor(0x000000, 1); // Set clear color to black
+renderer.physicallyCorrectLights = true; // Enable physically correct lighting
+renderer.outputColorSpace = THREE.SRGBColorSpace; // Set output color space for correct color rendering
+
 
 // 6. Add controls
 const controls = new OrbitControls(camera, renderer.domElement);
