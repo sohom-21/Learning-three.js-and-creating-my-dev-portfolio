@@ -39,7 +39,7 @@ const tubeGeometry = new THREE.TubeGeometry(spline, 250, 0.65, 16, true);
 
   // try to make a edge geometry from the tube geometry
 const edgeGeometry = new THREE.EdgesGeometry(tubeGeometry, 0.2);
-const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xfffff0});
+const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x00099ff, linewidth: 2 });
 const tubeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
 scene.add(tubeLines); // Adding the edge mesh to the scene 
 
@@ -47,10 +47,37 @@ scene.add(tubeLines); // Adding the edge mesh to the scene
 const light = new THREE.HemisphereLight(0xffffff, 0x444444);
 scene.add(light);
 
+//adding floating boxes to the scene
+const size = 0.075;
+const boxGeo = new THREE.BoxGeometry(size, size, size);
+const boxMat = new THREE.MeshBasicMaterial({
+color: 0x9900ff,
+wireframe: true
+});
+const numBoxes = 55;
+for (let i = 0; i < numBoxes; i += 1) {
+const box = new THREE.Mesh(boxGeo, boxMat);
+const p = (i / numBoxes + Math.random() * 0.1) % 1;
+const pos = tubeGeometry.parameters.path.getPointAt(p);
+pos.x += Math.random() - 0.4;
+pos.z += Math.random() - 0.4;
+box.position.copy(pos);
+const rote = new THREE. Vector3(
+Math.random() * Math.PI,
+Math.random() * Math.PI,
+Math.random() * Math.PI
+);
+box.rotation.set(rote.x, rote.y, rote.z);
+const color = new THREE.Color().setHSL(1.0 - p, 1, 0.5);
+const boxHelper = new THREE.BoxHelper(box, color);
+// scene.add(box);
+scene.add(boxHelper);
+}
+
 // fly through the tube geometry to create the wormhole effect
 function updateCamera(t){
   const time = t * 0.1; // Get current time in seconds 
-  const looptime = 20 * 1000;
+  const looptime = 8 * 1000; // setting the loop time to 8 seconds
   const point = (time % looptime) / looptime; // Normalize time to a value between 0 and 1
   const pos = tubeGeometry.parameters.path.getPointAt(point); // Get point on the spline at time t
   const lookAt = tubeGeometry.parameters.path.getPointAt((point + 0.03) % 1);
@@ -74,9 +101,9 @@ renderer.outputColorSpace = THREE.SRGBColorSpace; // Set output color space for 
 // post-processing
 const renderScene = new RenderPass(scene, camera);
 const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 100);
-bloomPass. threshold = 0.002;
+bloomPass.threshold = 0.001;
 bloomPass.strength = 3.5;
-bloomPass. radius = 0;
+bloomPass.radius = 0;
 const composer = new EffectComposer(renderer);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
@@ -94,7 +121,7 @@ const animate = ( t = 0 ) => {
   requestAnimationFrame(animate);
   updateCamera(t)
   // controls.update();
-  renderer.render(scene, camera);
+  composer.render(scene, camera);
 };
 // Handle window resize -- the animation should adapt to the new size of the window if it changes
 
