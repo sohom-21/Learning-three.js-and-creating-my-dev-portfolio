@@ -53,7 +53,7 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
     const props = {
         font: newFont,
          size: 1,
-         depth: 0.1,
+         depth: 0.2,
          curveSegments: 6,
          bevelEnabled: true,
          bevelThickness: 0.08,
@@ -64,12 +64,27 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
     const textGeo = new TextGeometry('Codevia.Crew', props);
     textGeo.computeBoundingBox();
     const CenterOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
-    const textMat = new THREE.MeshPhysicalMaterial({
-    roughness: 0.5,
-    transmission: 1.0,
-    transparent: true,
-    thickness: 1.0,
-  });
+    const textMat = new THREE.MeshStandardMaterial({
+        color: 0xff9900, 
+    });
+
+    //found a better material in reddit comments
+    // const textMat = THREE.MeshPhongMaterial({
+    //     color: 0xff9900,
+    //     shininess: 100,
+    //     specular: 0x555555,
+    //     transparent: true,
+    //     reflectivity: 0.5,
+    //     opacity: 0.9 // Set opacity for transparency
+    // });
+
+
+    //MeshPhysicalMaterial({
+    //roughness: 0.5,
+    //transmission: 1.0,
+    //transparent: true,
+    //thickness: 1.0,
+  //});
 
     const textMesh = new THREE.Mesh(textGeo, textMat);
     textMesh.position.x = CenterOffset;
@@ -83,10 +98,10 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
         });
     };
     strokegroup.position.x = CenterOffset;
-    strokegroup.position.z = 0.2;
+    strokegroup.position.z = 0.3;
     const lineMaterial = new LineMaterial({
         color: 0xffffff,
-        linewidth: 2.5, // Line width in world unit
+        linewidth: 3, // Line width in world unit
         dashed: true,
         dashSize: 0.1, // Length of the dash
         gapSize: 0.05, // Length of the gap between dashes
@@ -105,13 +120,8 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
         lineGeo.setPositions(points3d);
         const strokeMesh = new Line2(lineGeo, lineMaterial);
         strokeMesh.computeLineDistances(); // Compute line distances for dashed lines
-        let totalDist = shape.getLength();
-        lineMaterial.dashSize =  totalDist * 1.5, // Length of the dash
-        lineMaterial.gapSize =  totalDist * 1.5, // Length of the gap between dashes
-        // resolution: new THREE.Vector2(window.innerWidth, window.innerHeight) // Resolution for dashed lines
-        lineMaterial.dashOffset = 0.0
         strokeMesh.userData.update = (t) =>{
-            lineMaterial.dashOffset = t * 1; // Update dash offset based on time
+            lineMaterial.dashOffset = t * 0.1; // Update dash offset based on time
         }
         strokegroup.add(strokeMesh);
 
