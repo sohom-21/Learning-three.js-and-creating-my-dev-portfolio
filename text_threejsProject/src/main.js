@@ -44,7 +44,7 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 
 // 7. Load a font and create text geometry
-
+let strokegroup; //define strokegroup outside the loader callback to use it later
 const loader = new TTFLoader();
 loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
     console.log(res);
@@ -52,28 +52,46 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
     const newFont = font.parse(res);
     const props = {
         font: newFont,
-        size: 1,
-        depth: 0.2,
-        curveSegments: 6,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: 0.08,
-        beveloffset: 0,
-        bevelSize: 0.04
+         size: 1,
+         depth: 0.2,
+         curveSegments: 6,
+         bevelEnabled: true,
+         bevelThickness: 0.08,
+         bevelSize: 0.01,
+         bevelOffset: 0,
+         bevelSegments: 2
     };
     const textGeo = new TextGeometry('Codevia.Crew', props);
     textGeo.computeBoundingBox();
     const CenterOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
     const textMat = new THREE.MeshStandardMaterial({
-        color: 0x00ff00,
-        flatShading: true,
+        color: 0xff9900, 
     });
+
+    //found a better material in reddit comments
+    // const textMat = THREE.MeshPhongMaterial({
+    //     color: 0xff9900,
+    //     shininess: 100,
+    //     specular: 0x555555,
+    //     transparent: true,
+    //     reflectivity: 0.5,
+    //     opacity: 0.9 // Set opacity for transparency
+    // });
+
+
+    //MeshPhysicalMaterial({
+    //roughness: 0.5,
+    //transmission: 1.0,
+    //transparent: true,
+    //thickness: 1.0,
+  //});
+
     const textMesh = new THREE.Mesh(textGeo, textMat);
     textMesh.position.x = CenterOffset;
     textMesh.castShadow = true; // Enable shadow casting for the text mesh
     scene.add(textMesh);
 
-    const strokegroup = new THREE.Group();
+    strokegroup = new THREE.Group();
     strokegroup.userData.update = (t) => {
         strokegroup.children.forEach((child) => {
             child.userData.update?.(t);
@@ -103,7 +121,7 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
         const strokeMesh = new Line2(lineGeo, lineMaterial);
         strokeMesh.computeLineDistances(); // Compute line distances for dashed lines
         strokeMesh.userData.update = (t) =>{
-            LineMaterial.dashOffset = t * 0.1; // Update dash offset based on time
+            lineMaterial.dashOffset = t * 0.1; // Update dash offset based on time
         }
         strokegroup.add(strokeMesh);
 
@@ -117,11 +135,13 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
             const lineGeo = new LineGeometry();
             lineGeo.setPositions(points3d);
             const strokeMesh = new Line2(lineGeo, lineMaterial);
+            strokeMesh.computeLineDistances();
             strokegroup.add(strokeMesh);
             })
         }
     });
     scene.add(strokegroup);
+    animate();
 })
 
 
@@ -129,10 +149,9 @@ loader.load("./fonts/ChakraPetch-Bold.ttf",(res) => {
 function animate(t = 0) {
     requestAnimationFrame(animate);
     controls.update();
+    strokegroup.userData.update(t * 0.002);
     renderer.render(scene, camera);
 }
-
-animate();
 
 // 9. Handle window resize
 window.addEventListener('resize', () => {
