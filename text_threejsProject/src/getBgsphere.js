@@ -1,7 +1,7 @@
 import * as THREE from "three"
 
 export default function getBgSphere({ hue = 0.565, lightnessMult = 0.015 } = {}) {
-    const bgSphereGeo = new THREE.IcosahedronGeometry(4, 3);
+    const bgSphereGeo = new THREE.IcosahedronGeometry(6, 3);
     const bgSphereMat = new THREE.MeshBasicMaterial({
         side: THREE.BackSide,
         vertexColors: true,
