@@ -58,7 +58,7 @@ body {
 
   /* button component */
   .btn {
-    @apply flex gap-4 items-center justify-center cursor-pointer px-6 py-4 md:p-2 bg-black-300  transition-all active:scale-95 rounded-full mx-auto text-base;
+    @apply flex gap-4 items-center justify-center cursor-pointer px-4 py-3 sm:px-6 sm:py-4 md:p-2 bg-black-300  transition-all active:scale-95 rounded-full mx-auto text-base;
   }
 
   .btn-ping {
