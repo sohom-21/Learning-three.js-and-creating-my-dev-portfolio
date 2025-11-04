@@ -1,6 +1,4 @@
 import React from 'react'
-import MagicBento from "../micro_designs/MagicBento.jsx";
-import AnimatedWheel from "../micro_designs/AnimatedWheel.jsx";
 import EarthVisualization from '../components/EarthVisualization.jsx';
 import Button from '../components/Button.jsx';
 
@@ -27,9 +25,9 @@ const About = () => {
                 </div>
                 <div className='col-span-1 xl:row-span-3'>
                     <div className='grid-container'>
-                       <AnimatedWheel/>
+                       <img src='/assets/MytechStack.png' alt="my tech stack" className="w-full sm:h-[376px] md:h-[396px] lg:h-[426px] h-full object-contain"/>
                         <div>
-                            <p className='grid-headtext lg:mt-7'> Just a bit of my TechStack</p>
+                            <p className='grid-headtext md:mt-4 lg:mt-7'> Just a bit of my TechStack</p>
                             <p className='grid-subtext'>I know JavaScript/TypeScript, have worked on React and Next EcoSystems...</p>
                         </div>
                     </div>
