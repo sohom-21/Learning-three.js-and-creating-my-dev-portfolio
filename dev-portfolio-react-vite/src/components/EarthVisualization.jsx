@@ -1,7 +1,7 @@
-import React, { useRef, useMemo, useState, Suspense } from 'react';
+// keeping this code here because will this in the future so reference
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls } from '@react-three/drei';
-import CanvasLoader from './CanvasLoader.jsx';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Fresnel Material Hook
@@ -61,13 +61,13 @@ function useFresnelMaterial({ rimHex = 0x0088ff, facingHex = 0x000000 } = {}) {
 }
 
 // Starfield Component
-function Starfield({ numStars = 600, texturesLow = false }) {
-  // reduce star count to save CPU/GPU
+function Starfield({ numStars = 2000 }) {
   const points = useMemo(() => {
     const verts = [];
     const colors = [];
-
+    
     for (let i = 0; i < numStars; i++) {
+      // Random sphere point generation
       const radius = Math.random() * 25 + 25;
       const u = Math.random();
       const v = Math.random();
@@ -78,33 +78,18 @@ function Starfield({ numStars = 600, texturesLow = false }) {
       const z = radius * Math.cos(phi);
 
       verts.push(x, y, z);
+      
       const color = new THREE.Color().setHSL(0.6, 0.2, Math.random());
       colors.push(color.r, color.g, color.b);
     }
-
+    
     return { verts, colors };
   }, [numStars]);
 
   const circleTexture = useLoader(THREE.TextureLoader, '/assets/textures/circle.png');
-  if (circleTexture) {
-    if (texturesLow) {
-      // cheaper sampling for low quality
-      circleTexture.minFilter = THREE.LinearFilter;
-      circleTexture.magFilter = THREE.LinearFilter;
-      circleTexture.generateMipmaps = false;
-      circleTexture.anisotropy = 1;
-    } else {
-      // keep better sampling for high/ultra
-      circleTexture.minFilter = THREE.LinearMipMapLinearFilter;
-      circleTexture.magFilter = THREE.LinearFilter;
-      circleTexture.generateMipmaps = true;
-      circleTexture.anisotropy = Math.min(4, THREE.Cache ? 4 : 4);
-    }
-    circleTexture.needsUpdate = true;
-  }
 
   return (
-    <points frustumCulled={true}>
+    <points>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -120,18 +105,16 @@ function Starfield({ numStars = 600, texturesLow = false }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.18}
+        size={0.2}
         vertexColors
         map={circleTexture}
-        transparent={true}
-        depthWrite={false}
       />
     </points>
   );
 }
 
 // Earth Component
-function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false }) {
+function Earth() {
   const earthRef = useRef();
   const cloudsRef = useRef();
   const earthGroupRef = useRef();
@@ -146,34 +129,15 @@ function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false })
 
   const fresnelMaterial = useFresnelMaterial();
 
-  // when texturesLow is true, reduce mipmaps/anisotropy to save memory and sampling cost
-  if (texturesLow) {
-    [earthTexture, specularTexture, bumpTexture, lightsTexture, cloudTexture, cloudAlphaTexture].forEach((tex) => {
-      if (!tex) return;
-      tex.minFilter = THREE.LinearFilter;
-      tex.magFilter = THREE.LinearFilter;
-      tex.generateMipmaps = false;
-      tex.anisotropy = 1;
-      tex.needsUpdate = true;
-    });
-  }
-
-  // Throttled animation (~30 FPS): reduces CPU/GPU work
-  const lastRef = useRef(0);
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    const minDelta = 1 / 30; // target ~30 FPS updates
-    const elapsed = t - (lastRef.current || 0);
-    if (elapsed < minDelta) return;
-    lastRef.current = t;
-
-    const factor = Math.min(elapsed / (1 / 60), 2);
+  // Animation
+  useFrame((state, delta) => {
     if (earthGroupRef.current) {
-      earthGroupRef.current.rotation.y += 0.0013 * factor;
+      earthGroupRef.current.rotation.y += 0.0013;
     }
     if (cloudsRef.current) {
-      cloudsRef.current.rotation.y += 0.0004 * factor;
-      cloudsRef.current.rotation.z += 0.0004 * factor;
+      cloudsRef.current.rotation.y += 0.0004;
+      // cloudsRef.current.rotation.x += 0.0004;
+      cloudsRef.current.rotation.z += 0.0004;
     }
   });
 
@@ -181,8 +145,7 @@ function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false })
     <group ref={earthGroupRef} rotation-z={-23.4 * Math.PI / 180}>
       {/* Main Earth */}
       <mesh ref={earthRef} receiveShadow={true}>
-        {/* subdivision controlled by prop to tune quality */}
-        <icosahedronGeometry args={[1, earthSub]} />
+        <icosahedronGeometry args={[1, 15]} />
         <meshPhongMaterial
           map={earthTexture}
           specularMap={specularTexture}
@@ -192,7 +155,7 @@ function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false })
         
         {/* Night Lights */}
         <mesh>
-          <icosahedronGeometry args={[1, glowSub]} />
+          <icosahedronGeometry args={[1, 15]} />
           <meshBasicMaterial
             map={lightsTexture}
             blending={THREE.AdditiveBlending}
@@ -204,7 +167,7 @@ function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false })
         
       {/* Clouds */}
       <mesh ref={cloudsRef} scale={1.009} castShadow={true}>
-        <icosahedronGeometry args={[1, cloudSub]} />
+        <icosahedronGeometry args={[1, 15]} />
         <meshPhongMaterial
           map={cloudTexture}
           alphaMap={cloudAlphaTexture}
@@ -216,7 +179,7 @@ function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false })
 
         {/* Earth Glow */}
         <mesh scale={1.02}>
-          <icosahedronGeometry args={[1, glowSub]} />
+          <icosahedronGeometry args={[1, 15]} />
           <primitive object={fresnelMaterial} />
         </mesh>
       </mesh>
@@ -227,68 +190,36 @@ function Earth({ earthSub = 4, cloudSub = 4, glowSub = 4, texturesLow = false })
 }
 
 // Main App Component
-export default function EarthVisualization({ quality = 'auto', enableControlsOnClick = true }) {
-  // resolve quality (auto -> low on small screens, high otherwise)
-  let resolved = quality;
-  if (quality === 'auto') {
-    if (typeof window !== 'undefined') resolved = window.innerWidth < 768 ? 'low' : 'high';
-    else resolved = 'low';
-  }
-
-  const params = useMemo(() => {
-    if (resolved === 'low') {
-      return { earthSub: 4, cloudSub: 4, glowSub: 4, starCount: 300, dprCap: 1.0, fov: 60, texturesLow: true };
-    }
-    if (resolved === 'ultra') {
-      return { earthSub: 15, cloudSub: 15, glowSub: 15, starCount: 2000, dprCap: Math.max(window.devicePixelRatio || 1, 2), fov: 75, texturesLow: false };
-    }
-    // high
-    return { earthSub: 10, cloudSub: 8, glowSub: 8, starCount: 800, dprCap: 1.5, fov: 60, texturesLow: false };
-  }, [resolved]);
-
-  const [controlsEnabled, setControlsEnabled] = useState(false);
-
-  const handleEnableControls = () => {
-    if (enableControlsOnClick && !controlsEnabled) setControlsEnabled(true);
-  };
-
+export default function EarthVisualization() {
   return (
-    <div onClick={handleEnableControls} style={{ width: '100%', height: '100%', minHeight: '300px', maxHeight: '600px', background: '#000', cursor: enableControlsOnClick && !controlsEnabled ? 'pointer' : 'default' }}>
-      {/*
-        Performance-oriented Canvas settings:
-        - lower DPR cap
-        - request lower-power GPU preference
-        - disable expensive soft shadows by leaving shadows off
-      */}
-      {typeof window !== 'undefined' ? (
-        <Canvas
-          dpr={Math.min(window.devicePixelRatio || 1, params.dprCap)}
-          gl={{ antialias: true, powerPreference: resolved === 'ultra' ? 'high-performance' : 'low-power' }}
-        >
-          <color attach="background" args={['#000000']} />
-
-          <PerspectiveCamera makeDefault position={[0, 0, 4]} fov={params.fov} />
-
-          {/* Lighting: lower intensity to reduce shader cost */}
-          <directionalLight
-            position={[-2, -0.5, 1.5]}
-            intensity={1.0}
-            color={0xffffff}
-          />
-
-          {/* Wrap loader-using components in Suspense so react-three/drei's loading manager
-              does not trigger React state updates during render (avoids "setState in render" errors). */}
-          <Suspense fallback={<CanvasLoader />}>
-            <Earth earthSub={params.earthSub} cloudSub={params.cloudSub} glowSub={params.glowSub} texturesLow={params.texturesLow} />
-            <Starfield numStars={params.starCount} texturesLow={params.texturesLow} />
-          </Suspense>
-
-          {/* OrbitControls only when explicitly enabled (click to enable) */}
-          {controlsEnabled ? (
-            <OrbitControls enableDamping dampingFactor={0.05} enableZoom enablePan />
-          ) : null}
-        </Canvas>
-      ) : null}
+    <div style={{ width: '100%', height: '100%', minHeight: '300px', maxHeight: '600px', background: '#000' }}>
+      <Canvas shadows={{type: THREE.PCFSoftShadowMap}}>
+        <color attach="background" args={['#000000']} />
+        
+        <PerspectiveCamera makeDefault position={[0, 0, 4]} fov={75} />
+        
+        {/* Lighting */}
+        <directionalLight 
+          position={[-2, -0.5, 1.5]} 
+          intensity={2.0} 
+          color={0xffffff} 
+          castShadow={true} 
+        />
+        
+        {/* Earth */}
+        <Earth />
+        
+        {/* Starfield */}
+        <Starfield numStars={1000} />
+        
+        {/* Controls */}
+        <OrbitControls 
+          enableDamping 
+          dampingFactor={0.04} 
+          enableZoom 
+          enablePan 
+        />
+      </Canvas>
     </div>
   );
 }

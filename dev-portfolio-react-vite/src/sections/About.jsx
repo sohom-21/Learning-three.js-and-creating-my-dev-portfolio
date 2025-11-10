@@ -1,6 +1,7 @@
 import React from 'react'
-const EarthVisualization = React.lazy(() => import('../components/EarthVisualization.jsx'));
+// const EarthVisualization = React.lazy(() => import('../components/EarthVisualization.jsx'));
 import Button from '../components/Button.jsx';
+import EarthVisualization from '../components/EarthVisualization.jsx';
 
 const About = () => {
     const [hasCopied, setHasCopied] = React.useState(false);
@@ -16,7 +17,7 @@ const About = () => {
         <section className=' c-space my-14'>
             <div className='grid xl:grid-cols-3 xl:grid-rows-6 md:grid-cols-2 grid-cols-1 gap-6 h-full'>
                 <div className='col-span-1 xl:row-span-3'>
-                    <div className='grid-container bento-card'>
+                    <div className='grid-container'>
                         <img src={'/assets/grid_1.png'} alt='grid1' className='w-full sm:h-[376px] md:h-[396px] lg:h-[426px] h-full object-contain'/>
                         <div className=''>
                             <p className='grid-headtext'>Hey, there ....</p>
@@ -25,7 +26,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className='col-span-1 xl:row-span-3'>
-                    <div className='grid-container bento-card'>
+                    <div className='grid-container'>
                        <img src='/assets/MytechStack.png' alt="my tech stack" className="w-full sm:h-[376px] md:h-[396px] lg:h-[426px] h-full object-contain"/>
                         <div>
                             <p className='grid-headtext md:mt-4 lg:mt-7'> Just a bit of my TechStack</p>
@@ -34,7 +35,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className='col-span-1 xl:row-span-4'>
-                    <div className='grid-container bento-card'>
+                    <div className='grid-container'>
                         <React.Suspense fallback={<div style={{width: '100%', height: 360, background: '#000'}}/>}>
                             <EarthVisualization />
                         </React.Suspense>
@@ -46,7 +47,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className='xl:col-span-2 xl:row-span-3'>
-                    <div className='grid-container bento-card'>
+                    <div className='grid-container'>
                         <img src="/assets/grid3.png" alt=" grid-3"  className='w-full sm:h-[396px] h-fit object-contain'/>
                         <div>
                             <p className='grid-headtext'>I'm a tech enthusiast</p>
@@ -55,7 +56,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className='xl:col-span-1 xl:row-span-2'>
-                    <div className='grid-container bento-card'>
+                    <div className='grid-container'>
                         <img src='/assets/grid4.png' alt='grid-4' className='w-full md:h-[126px] sm:h-[276px] object-cover sm:object-top lg:h-[226px] lg:object-contain h-fit'/>
                         <div className='space-y-'>
                             <p className='grid-subtext font-virgo text-center'>Contact me</p>
