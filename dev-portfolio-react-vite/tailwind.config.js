@@ -5,6 +5,8 @@ export default {
     extend: {
       fontFamily: {
         generalsans: ['General Sans', 'sans-serif'],
+        custom_font: ['Virgo Display', 'sans-serif'],
+        custom_font_sec: ['Retro famous', 'sans-serif'],
       },
       colors: {
         black: {

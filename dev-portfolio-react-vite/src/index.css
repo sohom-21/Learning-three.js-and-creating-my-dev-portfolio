@@ -27,9 +27,35 @@ body {
   font-family: 'General Sans', sans-serif;
 }
 
+/* Prefer the OTF in public/font (file contains a space so we percent-encode it). If you convert to woff2
+   place the file in public/font and update the src to point to VirgoDisplay.woff2 for best performance. */
+@font-face {
+  font-family: 'Virgo Display';
+  src: url('/font/Virgo%20Display.otf') format('opentype');
+  /* fallback to the ttf if present (browser will try in order) */
+  /* src: url('/font/Virgo%20Display.ttf') format('truetype'); */
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Retro famous';
+  src: url('/font/RetroFamous.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer utilities {
   .c-space {
     @apply sm:px-10 px-5;
+  }
+  .font-virgo{
+    font-family: 'Virgo Display';
+  }
+  .font-retrofamous{
+    font-family: 'Retro famous';
   }
 
   .head-text {
@@ -210,5 +236,63 @@ body {
   }
   100% {
     transform: rotate(0deg);
+  }
+}
+
+/* ...existing code... */
+
+/* bento card glow */
+.bento-card {
+  position: relative;
+  overflow: visible; /* allow glow to bleed */
+  transition: transform .18s ease;
+  will-change: transform;
+}
+
+.bento-card::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(.8);
+  width: 140%;
+  height: 140%;
+  pointer-events: none;
+  border-radius: 14px; /* match card radius */
+  background: radial-gradient(circle at 50% 40%, rgba(175,120,255,0.95) 0%, rgba(120,70,200,0.35) 20%, rgba(80,40,140,0.08) 50%, transparent 70%);
+  filter: blur(26px);
+  opacity: 0;
+  transition: opacity .28s cubic-bezier(.2,.9,.2,1), transform .28s cubic-bezier(.2,.9,.2,1);
+  z-index: 0; /* behind content */
+}
+
+/* place card content above the glow */
+.bento-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* hover / focus */
+.bento-card:hover,
+.bento-card:focus-within {
+  transform: translateY(-4px);
+}
+.bento-card:hover::before,
+.bento-card:focus-within::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* subtle inner rim (optional) */
+.bento-card:active::before {
+  transform: translate(-50%, -50%) scale(.96);
+  opacity: .9;
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bento-card,
+  .bento-card::before {
+    transition: none;
   }
 }

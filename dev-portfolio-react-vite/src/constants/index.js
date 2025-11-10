@@ -259,20 +259,22 @@ export const calculateSizes = (isSmall, isMobile, isTablet) => {
 export const calculateSizesForDesk = (isSmall, isMobile, isTablet) => {
     return {
         deskScale: isSmall ? 0.5 : isMobile ? 0.5 : 0.5,
+        CubeScale: isSmall ? 0.24 : isMobile ? 0.25 : 0.35,
+        reactScale: isSmall ? 0.1 : isMobile ? 0.19 : 0.24,
+        ringScale: isSmall ? 0.09 : isMobile ? 0.1 : 0.2,
+        PythonLogoScale: isSmall ? 0.2 : isMobile ? 0.2 : 0.3,
+        GitLogoScale: isSmall ? 0.24 : isMobile ? 0.25 : 0.3,
+        Desk_blend_Scale: isSmall ? 0.9 : isMobile? 1.2 :isTablet? 1.4 : 1.8,
+
+
         deskPosition: isMobile ? [-1.0, 1.1, 5.4] : [-1.0, 1.1, 6.4],
         cubePosition: isSmall ? [1.9, -3.4, 0] : isMobile ? [3, -4.0, -2] : isTablet ? [5, -3, -2] : [6.8, -3, 0],
-        CubeScale: isSmall ? 0.24 : isMobile ? 0.25 : 0.35,
         reactLogoPosition: isSmall ? [1.9, 3.3, 0] : isMobile ? [2.1, 3.34, 0] : isTablet ? [3.3, 3.6, 0] : [6, 3, 0],
-        reactScale: isSmall ? 0.1 : isMobile ? 0.2 : 0.3,
         ringPosition: isSmall ? [-5, 7, 0] : isMobile ? [-10, 10, 0] : isTablet ? [-12, 10, 0] : [-50, 10, 0],
-        ringScale: isSmall ? 0.09 : isMobile ? 0.1 : 0.2,
         targetPosition: isSmall ? [-4, -9, -10] : isMobile ? [-4.9, -7.8, -10] : isTablet ? [-10, -8, -10] : [-12.5, -8.5, -10],
         // targetScale: isSmall ? 0.09 : isMobile ? 0.1 : 1,
         pythonLogoPosition: isSmall ? [2.7, -1.2, -0.4] : isMobile ? [4.8, -1.2, -0.4] : isTablet ? [1.5, 1.5, 0] : [6.6, 0.0, 0.5],
-        PythonLogoScale: isSmall ? 0.2 : isMobile ? 0.2 : 0.3,
         githubLogoPosition: isSmall ? [-1.4, 0.5, 0] : isMobile ? [-1.8, 0.3, 0.5] : isTablet ? [-3.82, 0.5, 0] : [-3.8, 1.6, 0.6],
-        GitLogoScale: isSmall ? 0.24 : isMobile ? 0.25 : 0.3,
-        Desk_blend_Scale: isSmall ? 0.9 : isMobile? 1.2 :isTablet? 1.4 : 1.8,
         Desk_blend_position: isSmall ? [-0.5,-1.5, 4.0] : isMobile? [-0.5,-1.2,4.0] : isTablet? [-0.9,-2.0, 3.8] : [-0.9,-2.1,4.0],
     };
 };
