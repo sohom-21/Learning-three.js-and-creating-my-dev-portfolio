@@ -3,6 +3,7 @@ import { myProjects } from '../constants';
 
 const ProjectCard = ({ project, onOpen }) => {
   const image = project.image_1 || Object.values(project).find(v => typeof v === 'string' && v.match(/\.(png|jpe?g|webp|gif)$/i));
+  const link = project.live_link || project.project_url;
   return (
     <div
       className="group bg-[#07070a] rounded-2xl overflow-hidden shadow-2xl hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] transition-shadow duration-300"
@@ -32,6 +33,20 @@ const ProjectCard = ({ project, onOpen }) => {
             </span>
           ))}
         </div>
+
+        {link && (
+          <div className="mt-4">
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()} // avoid opening modal when clicking the button
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-gradient-to-r from-white/90 to-white/70 text-black text-sm font-medium shadow-md hover:opacity-95 transition"
+            >
+              View Project
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

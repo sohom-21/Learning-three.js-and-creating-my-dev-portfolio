@@ -32,6 +32,7 @@ export const myProjects = [
         image_3: '/projects/crm/zutokfitnesscrm-3.png',
         image_4: '/projects/crm/zutokfitnesscrm-4.png',
         spotlight: '/assets/spotlight1.png',
+        live_link:'https://gym-management-system-36fcf.web.app/login',
         tags: [
             {
                 id: 1,
@@ -92,6 +93,7 @@ export const myProjects = [
             'Backend powered by Appwrite for authentication, database and storage; built with React Native, Appwrite functions, Twilio for SMS notifications and Sentry for monitoring to ensure secure, realtime features and reliable error tracking.',
         image_1: '/projects/Apps/Real Scout - Real-Estate App.png',
         image_2: '/projects/Apps/appDesign.png',
+        project_url:'https://github.com/sohom-21/Estate-Application-in-ReactNative',
         spotlight: '/assets/spotlight3.png',
         tags: [
             {
@@ -123,6 +125,7 @@ export const myProjects = [
             'Built with React, Vite, Tailwindcss and GSAP for performant, cinematic animations and a responsive, highly polished landing experience.',
         image_1: '/projects/landingpage/image.png',
         spotlight: '/assets/spotlight4.png',
+        live_link:'https://gsap-landing-revision.vercel.app/',
         tags: [
             {
                 id: 1,
