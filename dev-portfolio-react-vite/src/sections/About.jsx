@@ -14,7 +14,8 @@ const About = () => {
     }
 
     return (
-        <section className=' c-space my-14'>
+        <section className=' c-space my-8'>
+            <div className='font-retrofamous font-semibold text-white text-3xl text-center mb-5'> My About Section</div>
             <div className='grid xl:grid-cols-3 xl:grid-rows-6 md:grid-cols-2 grid-cols-1 gap-6 h-full'>
                 <div className='col-span-1 xl:row-span-3'>
                     <div className='grid-container'>
@@ -36,9 +37,10 @@ const About = () => {
                 </div>
                 <div className='col-span-1 xl:row-span-4'>
                     <div className='grid-container'>
-                        <React.Suspense fallback={<div style={{width: '100%', height: 360, background: '#000'}}/>}>
+                        {/* <React.Suspense fallback={<div style={{width: '100%', height: 360, background: '#000'}}/>}>
                             <EarthVisualization />
-                        </React.Suspense>
+                        </React.Suspense> */}
+                        <EarthVisualization />
                         <div>
                             <p className='grid-headtext'>Ready to work  remotely across the globe...</p>
                             <p className='grid-subtext'>I'm a dev based in India</p>

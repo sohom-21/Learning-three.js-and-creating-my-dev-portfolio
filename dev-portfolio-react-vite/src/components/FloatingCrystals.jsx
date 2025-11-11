@@ -92,9 +92,9 @@ const FloatingCrystals = ({ position = [0, 0, 0] }) => {
                         <bufferGeometry>
                             <bufferAttribute
                                 attach="attributes-position"
-                                count={200}
+                                count={150}
                                 array={particlePositions}
-                                itemSize={3}
+                                itemSize={2}
                             />
                         </bufferGeometry>
                         <pointsMaterial
