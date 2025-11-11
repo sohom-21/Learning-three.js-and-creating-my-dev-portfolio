@@ -162,6 +162,10 @@ body {
   .work-content_logo {
     @apply rounded-3xl w-16 h-16 p-2 bg-black-600;
   }
+  
+  .hero-badge {
+    @apply bg-black-200 py-2 px-4 rounded-full w-fit text-sm md:text-base text-nowrap;
+  }
 
   .work-content_bar {
     @apply flex-1 w-0.5 mt-4 h-full bg-black-300 group-hover:bg-black-500 group-last:hidden;

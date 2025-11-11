@@ -3,20 +3,100 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Center } from '@react-three/drei';
 import * as THREE from 'three';
 
+//  shaders/particleShaders.js
+// We define the shaders as strings.
+
+const vertexShader = `
+  // Uniforms (values sent from React)
+  uniform float uTime;
+  uniform vec3 uMousePos;
+
+  // Attributes (data unique to each particle)
+  attribute vec3 aVelocity;
+  attribute vec3 aColor;
+
+  // Varyings (data passed from vertex to fragment shader)
+  varying vec3 vColor;
+  varying float vMouseDist;
+
+  void main() {
+    // 1. --- FLOATING ANIMATION ---
+    // Create a looping, floating motion using sine waves
+    // We use position and velocity to offset the waves, so they don't all move in sync
+    vec3 pos = position;
+    pos.x += sin(uTime * aVelocity.x + position.y) * 0.5;
+    pos.y += cos(uTime * aVelocity.y + position.x) * 0.5;
+    pos.z += sin(uTime * aVelocity.z + position.z) * 0.5;
+
+    // 2. --- MOUSE INTERACTION ---
+    // Calculate distance from the particle to the mouse
+    float dist = distance(pos.xy, uMousePos.xy);
+
+    // Calculate a "push" force. 
+    // smoothstep() is 1.0 when dist is 0, and 0.0 when dist is 4.0
+    float force = 1.0 - smoothstep(0.0, 4.0, dist);
+
+    // Find the direction to push the particle away from the mouse
+    vec2 pushDirection = normalize(pos.xy - uMousePos.xy);
+
+    // Apply the push force (strongest when close)
+    // We multiply by 2.0 to make the push effect more obvious
+    pos.xy += pushDirection * force * 2.0;
+
+    // 3. --- FINAL POSITION ---
+    // Pass data to the fragment shader
+    vColor = aColor; // Pass the particle's original color
+    vMouseDist = dist; // Pass the mouse distance
+
+    // Calculate the final position in screen space
+    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
+
+    // 4. --- SIZE ATTENUATION ---
+    // Make particles smaller as they get farther away
+    gl_PointSize = 10.0 * (1.0 / -mvPosition.z);
+  }
+`;
+
+const fragmentShader = `
+  varying vec3 vColor;
+  varying float vMouseDist;
+
+  void main() {
+    // The color when the mouse is close
+    vec3 highlightColor = vec3(1.0, 0.3, 0.8);
+
+    // Use smoothstep() to smoothly blend between colors
+    // 1.0 (all highlight) when dist < 1.5
+    // 0.0 (all original) when dist > 3.0
+    float mixFactor = 1.0 - smoothstep(1.5, 3.0, vMouseDist);
+
+    // mix() blends between the two colors based on the mixFactor
+    vec3 finalColor = mix(vColor, highlightColor, mixFactor);
+
+    // We can also make particles near the mouse fade in
+    float opacity = 0.8 + (mixFactor * 0.2); // 0.8 normally, 1.0 on highlight
+
+    gl_FragColor = vec4(finalColor, opacity);
+  }
+`;
+
+
+// The new component
 const InteractiveParticlesV2 = ({ position = [0, 0, 0] }) => {
-    const particlesRef = useRef();
+    const materialRef = useRef();
     const groupRef = useRef();
-    const mousePos = useRef({ x: 0, y: 0 });
-    const frameCount = useRef(0);
     const { pointer } = useThree();
 
-    // Pre-calculate colors to avoid creating new Color objects each frame
-    const { positions, velocities, colors, originalColors } = useMemo(() => {
-        const count = 300;
+    // We use a ref for the mouse position to smoothly lerp (interpolate) it
+    const mousePos = useRef(new THREE.Vector2(0, 0));
+
+    // We increased the count from 300 to 5000 to show the performance!
+    const particleData = useMemo(() => {
+        const count = 1000;
         const positions = new Float32Array(count * 3);
-        const velocities = new Float32Array(count * 3);
-        const colors = new Float32Array(count * 3);
-        const originalColors = new Float32Array(count * 3);
+        const velocities = new Float32Array(count * 3); // For sin wave speed
+        const colors = new Float32Array(count * 3);     // Original color
 
         for (let i = 0; i < count; i++) {
             // Position particles in a sphere
@@ -28,112 +108,83 @@ const InteractiveParticlesV2 = ({ position = [0, 0, 0] }) => {
             positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
             positions[i * 3 + 2] = radius * Math.cos(phi);
 
-            // Random velocities
-            velocities[i * 3] = (Math.random() - 0.5) * 0.02;
-            velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
-            velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
+            // Random velocities (for animation speed/offset)
+            velocities[i * 3] = (Math.random() - 0.5) * 0.4;
+            velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.4;
+            velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.4;
 
             // Pre-calculate original colors
             const hue = Math.random();
             const color = new THREE.Color().setHSL(hue, 0.8, 0.6);
-            originalColors[i * 3] = color.r;
-            originalColors[i * 3 + 1] = color.g;
-            originalColors[i * 3 + 2] = color.b;
-
-            // Set initial colors
             colors[i * 3] = color.r;
             colors[i * 3 + 1] = color.g;
             colors[i * 3 + 2] = color.b;
         }
 
-        return { positions, velocities, colors, originalColors };
+        return { positions, velocities, colors };
     }, []);
 
+    // This is our NEW animation loop. It's tiny!
     useFrame((state, delta) => {
-        if (!particlesRef.current || !groupRef.current) return;
+        if (!materialRef.current || !groupRef.current) return;
 
-        // Limit frame rate to reduce CPU usage
-        frameCount.current++;
-        if (frameCount.current % 2 !== 0) return; // Skip every other frame
+        // 1. Smoothly update the mouse position ref
+        mousePos.current.lerp(new THREE.Vector2(pointer.x * 10, pointer.y * 10), 0.1);
 
-        const positions = particlesRef.current.geometry.attributes.position.array;
-        const colors = particlesRef.current.geometry.attributes.color.array;
+        // 2. Update the shader's 'uniform' values
+        materialRef.current.uniforms.uTime.value += delta;
+        materialRef.current.uniforms.uMousePos.value.x = mousePos.current.x;
+        materialRef.current.uniforms.uMousePos.value.y = mousePos.current.y;
 
-        // Update mouse position less frequently
-        mousePos.current.x = pointer.x * 10;
-        mousePos.current.y = pointer.y * 10;
+        // Slower rotation (this is still on the CPU, which is fine)
+        groupRef.current.rotation.y += delta * 0.1;
+        groupRef.current.rotation.x += delta * 0.05;
 
-        // Simplified animation with reduced calculations
-        for (let i = 0; i < positions.length; i += 3) {
-            // Basic floating motion
-            positions[i] += velocities[i] * delta * 10;
-            positions[i + 1] += velocities[i + 1] * delta * 10;
-            positions[i + 2] += velocities[i + 2] * delta * 10;
-
-            // Simplified mouse interaction (only check every 5th particle)
-            if (i % 15 === 0) {
-                const dx = positions[i] - mousePos.current.x;
-                const dy = positions[i + 1] - mousePos.current.y;
-                const mouseDistance = Math.sqrt(dx * dx + dy * dy);
-
-                if (mouseDistance < 3) {
-                    const attractionForce = (3 - mouseDistance) * 0.001;
-                    positions[i] += -dx * attractionForce;
-                    positions[i + 1] += -dy * attractionForce;
-
-                    // Simplified color change
-                    colors[i] = 1;
-                    colors[i + 1] = 0.3;
-                    colors[i + 2] = 0.8;
-                } else {
-                    // Return to original colors using pre-calculated values
-                    const lerpFactor = 0.02;
-                    colors[i] += (originalColors[i] - colors[i]) * lerpFactor;
-                    colors[i + 1] += (originalColors[i + 1] - colors[i + 1]) * lerpFactor;
-                    colors[i + 2] += (originalColors[i + 2] - colors[i + 2]) * lerpFactor;
-                }
-            }
-
-            // Simplified boundary wrapping
-            if (positions[i] > 15 || positions[i] < -15) velocities[i] *= -1;
-            if (positions[i + 1] > 15 || positions[i + 1] < -15) velocities[i + 1] *= -1;
-            if (positions[i + 2] > 15 || positions[i + 2] < -15) velocities[i + 2] *= -1;
-        }
-
-        // Slower rotation to reduce calculations
-        groupRef.current.rotation.y += delta * 0.2;
-        groupRef.current.rotation.x += delta * 0.1;
-
-        // Mark for update
-        particlesRef.current.geometry.attributes.position.needsUpdate = true;
-        particlesRef.current.geometry.attributes.color.needsUpdate = true;
+        // NO MORE LOOPS!
+        // NO MORE .needsUpdate = true!
     });
+
+    // Define the uniforms for the shader
+    const uniforms = useMemo(() => ({
+        uTime: { value: 0.0 },
+        uMousePos: { value: new THREE.Vector3(0, 0, 0) },
+    }), []);
 
     return (
         <Center>
             <group ref={groupRef} position={position} scale={0.8}>
-                {/* Single optimized particle system */}
-                <points ref={particlesRef}>
+                <points>
                     <bufferGeometry>
+                        {/* The initial positions */}
                         <bufferAttribute
                             attach="attributes-position"
-                            count={positions.length / 3}
-                            array={positions}
+                            count={particleData.positions.length / 3}
+                            array={particleData.positions}
+                            itemSize={3}
+                        />
+                        {/* The new custom attributes */}
+                        <bufferAttribute
+                            attach="attributes-aVelocity"
+                            count={particleData.velocities.length / 3}
+                            array={particleData.velocities}
                             itemSize={3}
                         />
                         <bufferAttribute
-                            attach="attributes-color"
-                            count={colors.length / 3}
-                            array={colors}
+                            attach="attributes-aColor"
+                            count={particleData.colors.length / 3}
+                            array={particleData.colors}
                             itemSize={3}
                         />
                     </bufferGeometry>
-                    <pointsMaterial
-                        size={0.03}
-                        vertexColors
+                    {/* This is where the magic happens! */}
+                    <shaderMaterial
+                        ref={materialRef}
+                        uniforms={uniforms}
+                        vertexShader={vertexShader}
+                        fragmentShader={fragmentShader}
                         transparent
-                        opacity={0.8}
-                        sizeAttenuation={true}
+                        blending={THREE.AdditiveBlending} // Looks great for particles
+                        depthWrite={false} // Important for blending
                     />
                 </points>
             </group>
