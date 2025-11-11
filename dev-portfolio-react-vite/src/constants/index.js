@@ -21,41 +21,6 @@ export const navLinks = [
     },
 ];
 
-export const clientReviews = [
-    {
-        id: 1,
-        name: 'Emily Johnson',
-        position: 'Marketing Director at GreenLeaf',
-        img: 'assets/review1.png',
-        review:
-            'Working with Adrian was a fantastic experience. He transformed our outdated website into a modern, user-friendly platform. His attention to detail and commitment to quality are unmatched. Highly recommend him for any web dev projects.',
-    },
-    {
-        id: 2,
-        name: 'Mark Rogers',
-        position: 'Founder of TechGear Shop',
-        img: 'assets/review2.png',
-        review:
-            'Adrian’s expertise in web development is truly impressive. He delivered a robust and scalable solution for our e-commerce site, and our online sales have significantly increased since the launch. He’s a true professional! Fantastic work.',
-    },
-    {
-        id: 3,
-        name: 'John Dohsas',
-        position: 'Project Manager at UrbanTech ',
-        img: 'assets/review3.png',
-        review:
-            'I can’t say enough good things about Adrian. He was able to take our complex project requirements and turn them into a seamless, functional website. His problem-solving abilities are outstanding.',
-    },
-    {
-        id: 4,
-        name: 'Ether Smith',
-        position: 'CEO of BrightStar Enterprises',
-        img: 'assets/review4.png',
-        review:
-            'Adrian was a pleasure to work with. He understood our requirements perfectly and delivered a website that exceeded our expectations. His skills in both frontend backend dev are top-notch.',
-    },
-];
-
 export const myProjects = [
     {
         title: 'Zutok Fitness - GymCRM',
@@ -125,8 +90,8 @@ export const myProjects = [
         desc: 'RealScout is a mobile-first real estate app that helps users discover, filter and book properties with an intuitive card-and-map interface — fast search, saved favorites and smooth booking flow.',
         subdesc:
             'Backend powered by Appwrite for authentication, database and storage; built with React Native, Appwrite functions, Twilio for SMS notifications and Sentry for monitoring to ensure secure, realtime features and reliable error tracking.',
-        image_1: '/public/projects/Apps/Real Scout - Real-Estate App.png',
-        image_2: '/public/projects/Apps/appDesign.png',
+        image_1: '/projects/Apps/Real Scout - Real-Estate App.png',
+        image_2: '/projects/Apps/appDesign.png',
         spotlight: '/assets/spotlight3.png',
         tags: [
             {
@@ -156,7 +121,7 @@ export const myProjects = [
         desc: 'Sleek landing showcasing Noble Nectar’s Martini: bold headline, rich imagery and refined typography with smooth, immersive animations powered by React + Vite, Tailwindcss and GSAP for silky transitions and micro-interactions. Fast, responsive and highly polished — designed to draw attention and invite exploration',
         subdesc:
             'Built with React, Vite, Tailwindcss and GSAP for performant, cinematic animations and a responsive, highly polished landing experience.',
-        image_1: '/public/projects/landingpage/image.png',
+        image_1: '/projects/landingpage/image.png',
         spotlight: '/assets/spotlight4.png',
         tags: [
             {
