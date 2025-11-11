@@ -164,7 +164,7 @@ body {
   }
   
   .hero-badge {
-    @apply bg-black-200 py-2 px-4 rounded-full w-fit text-sm md:text-base text-nowrap;
+    @apply bg-black-200 py-2 px-4 rounded-full w-fit  text-nowrap;
   }
 
   .work-content_bar {

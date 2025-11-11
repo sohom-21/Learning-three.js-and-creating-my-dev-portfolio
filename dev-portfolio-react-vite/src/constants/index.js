@@ -58,18 +58,14 @@ export const clientReviews = [
 
 export const myProjects = [
     {
-        title: 'Podcastr - AI Podcast Platform',
-        desc: 'Podcastr is a revolutionary Software-as-a-Service platform that transforms the way podcasts are created. With advanced AI-powered features like text-to-multiple-voices functionality, it allows creators to generate diverse voiceovers from a single text input.',
+        title: 'Zutok Fitness - GymCRM',
+        desc: 'Zutok Fitness CRM — modern, all-in-one membership management designed for gyms and fitness studios. Clean dashboard UI (see attached screenshots) gives staff instant visibility into members, payments, schedules and day-to-day operations so teams spend less time on admin and more time on members.',
         subdesc:
-            'Built as a unique Software-as-a-Service app with Next.js 14, Tailwind CSS, TypeScript, Framer Motion and Convex, Podcastr is designed for optimal performance and scalability.',
-        href: 'https://www.youtube.com/watch?v=zfAb95tJvZQ',
-        texture: '/textures/project/project1.mp4',
-        logo: '/assets/project-logo1.png',
-        logoStyle: {
-            backgroundColor: '#2A1816',
-            border: '0.2px solid #36201D',
-            boxShadow: '0px 0px 60px 0px #AA3C304D',
-        },
+            'Built with Firebase (Authentication, Firestore, Storage and Security Rules), React & Next.js, Tailwind CSS and shadcn/ui (or similar) for a secure, responsive, production-ready admin experience.',
+        image_1: '/projects/crm/zutokfitnesscrm.png',
+        image_2: '/projects/crm/zutokfitnesscrm-2.png',
+        image_3: '/projects/crm/zutokfitnesscrm-3.png',
+        image_4: '/projects/crm/zutokfitnesscrm-4.png',
         spotlight: '/assets/spotlight1.png',
         tags: [
             {
@@ -95,19 +91,12 @@ export const myProjects = [
         ],
     },
     {
-        title: 'LiveDoc - Real-Time Google Docs Clone',
-        desc: 'LiveDoc is a powerful collaborative app that elevates the capabilities of real-time document editing. As an enhanced version of Google Docs, It supports millions of collaborators simultaneously, ensuring that every change is captured instantly and accurately.',
+        title: 'Zylokart - An Modern ecommerces Website',
+        desc: 'Zylokart is a modern, conversion-focused e‑commerce platform designed to showcase products and streamline checkout. It features a clean product grid, quick product previews, category filtering, and a responsive storefront that converts visitors into customers.',
         subdesc:
-            'With LiveDoc, users can experience the future of collaboration, where multiple contributors work together in real time without any lag, by using Next.js and Liveblocks newest features.',
-        href: 'https://www.youtube.com/watch?v=y5vE8y_f_OM',
-        texture: '/textures/project/project2.mp4',
-        logo: '/assets/project-logo2.png',
-        logoStyle: {
-            backgroundColor: '#13202F',
-            border: '0.2px solid #17293E',
-            boxShadow: '0px 0px 60px 0px #2F6DB54D',
-        },
+            'Built with React, Next.js, Tailwind CSS and Supabase for authentication and data/storage — a fast, scalable stack for commerce with realtime features and secure persistence.',
         spotlight: '/assets/spotlight2.png',
+        image_1: '/projects/e-com/zylokart_ecommerce.png',
         tags: [
             {
                 id: 1,
@@ -132,20 +121,12 @@ export const myProjects = [
         ],
     },
     {
-        title: 'CarePulse - Health Management System',
-        desc: 'An innovative healthcare platform designed to streamline essential medical processes. It simplifies patient registration, appointment scheduling, and medical record management, providing a seamless experience for both healthcare providers and patients.',
+        title: 'RealScout - A real estate react native app',
+        desc: 'RealScout is a mobile-first real estate app that helps users discover, filter and book properties with an intuitive card-and-map interface — fast search, saved favorites and smooth booking flow.',
         subdesc:
-            'With a focus on efficiency, CarePulse integrantes complex forms and SMS notifications, by using Next.js, Appwrite, Twillio and Sentry that enhance operational workflows.',
-        href: 'https://www.youtube.com/watch?v=lEflo_sc82g',
-        texture: '/textures/project/project3.mp4',
-        logo: '/assets/project-logo3.png',
-        logoStyle: {
-            backgroundColor: '#60f5a1',
-            background:
-                'linear-gradient(0deg, #60F5A150, #60F5A150), linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(208, 213, 221, 0.8) 100%)',
-            border: '0.2px solid rgba(208, 213, 221, 1)',
-            boxShadow: '0px 0px 60px 0px rgba(35, 131, 96, 0.3)',
-        },
+            'Backend powered by Appwrite for authentication, database and storage; built with React Native, Appwrite functions, Twilio for SMS notifications and Sentry for monitoring to ensure secure, realtime features and reliable error tracking.',
+        image_1: '/public/projects/Apps/Real Scout - Real-Estate App.png',
+        image_2: '/public/projects/Apps/appDesign.png',
         spotlight: '/assets/spotlight3.png',
         tags: [
             {
@@ -171,56 +152,12 @@ export const myProjects = [
         ],
     },
     {
-        title: 'Horizon - Online Banking Platform',
-        desc: 'Horizon is a comprehensive online banking platform that offers users a centralized finance management dashboard. It allows users to connect multiple bank accounts, monitor real-time transactions, and seamlessly transfer money to other users.',
+        title: 'Noble Nectar - A animated landing page',
+        desc: 'Sleek landing showcasing Noble Nectar’s Martini: bold headline, rich imagery and refined typography with smooth, immersive animations powered by React + Vite, Tailwindcss and GSAP for silky transitions and micro-interactions. Fast, responsive and highly polished — designed to draw attention and invite exploration',
         subdesc:
-            'Built with Next.js 14 Appwrite, Dwolla and Plaid, Horizon ensures a smooth and secure banking experience, tailored to meet the needs of modern consumers.',
-        href: 'https://www.youtube.com/watch?v=PuOVqP_cjkE',
-        texture: '/textures/project/project4.mp4',
-        logo: '/assets/project-logo4.png',
-        logoStyle: {
-            backgroundColor: '#0E1F38',
-            border: '0.2px solid #0E2D58',
-            boxShadow: '0px 0px 60px 0px #2F67B64D',
-        },
+            'Built with React, Vite, Tailwindcss and GSAP for performant, cinematic animations and a responsive, highly polished landing experience.',
+        image_1: '/public/projects/landingpage/image.png',
         spotlight: '/assets/spotlight4.png',
-        tags: [
-            {
-                id: 1,
-                name: 'React.js',
-                path: '/assets/react.svg',
-            },
-            {
-                id: 2,
-                name: 'TailwindCSS',
-                path: 'assets/tailwindcss.png',
-            },
-            {
-                id: 3,
-                name: 'TypeScript',
-                path: '/assets/typescript.png',
-            },
-            {
-                id: 4,
-                name: 'Framer Motion',
-                path: '/assets/framer.png',
-            },
-        ],
-    },
-    {
-        title: 'Imaginify - AI Photo Manipulation App',
-        desc: 'Imaginify is a groundbreaking Software-as-a-Service application that empowers users to create stunning photo manipulations using AI technology. With features like AI-driven image editing, a payments system, and a credits-based model.',
-        subdesc:
-            'Built with Next.js 14, Cloudinary AI, Clerk, and Stripe, Imaginify combines cutting-edge technology with a user-centric approach. It can be turned into a side income or even a full-fledged business.',
-        href: 'https://www.youtube.com/watch?v=Ahwoks_dawU',
-        texture: '/textures/project/project5.mp4',
-        logo: '/assets/project-logo5.png',
-        logoStyle: {
-            backgroundColor: '#1C1A43',
-            border: '0.2px solid #252262',
-            boxShadow: '0px 0px 60px 0px #635BFF4D',
-        },
-        spotlight: '/assets/spotlight5.png',
         tags: [
             {
                 id: 1,
