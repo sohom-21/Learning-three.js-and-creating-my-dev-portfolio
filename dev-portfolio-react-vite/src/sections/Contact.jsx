@@ -12,7 +12,7 @@ import ContactExperience from "../components/contact/ContactExperience.jsx";
 const Contact = () => {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
@@ -24,14 +24,13 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+    if (!form.name.trim() || !form.email.trim() || !form.subject.trim() || !form.message.trim()) {
       alert("Please fill out all fields.");
       return;
     }
     setLoading(true);
     try {
-      const serverUrl = import.meta.env.VITE_APP_SERVER_URL || "http://localhost:5000";
-      const res = await fetch(`${serverUrl.replace(/\/$/, "")}/send`, {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -40,7 +39,7 @@ const Contact = () => {
       if (!res.ok) throw new Error("Server error");
 
       alert("Thank you — your message was sent.");
-      setForm({ name: "", email: "", message: "" });
+      setForm({ name: "", email: "", subject: "", message: "" });
       if (formRef.current) formRef.current.reset();
     } catch (err) {
       console.error("Send error:", err);
@@ -90,6 +89,22 @@ const Contact = () => {
                   placeholder="What's your email address?"
                   className="field-input mt-1 pl-12"
                   type="email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="subject" className="block text-sm text-gray-300 mb-2">Subject</label>
+              <div className="relative">
+                <input
+                  id="subject"
+                  name="subject"
+                  value={form.subject}
+                  onChange={handleChange}
+                  placeholder="What's the subject of your message?"
+                  className="field-input mt-1 pl-12"
+                  type="text"
                   required
                 />
               </div>

@@ -14,7 +14,7 @@ const About = () => {
     }
 
     return (
-        <section className=' c-space my-8'>
+        <section id="about" className=' c-space my-8'>
             <div className='font-retrofamous font-semibold text-white text-3xl text-center mb-5'> My About Section</div>
             <div className='grid xl:grid-cols-3 xl:grid-rows-6 md:grid-cols-2 grid-cols-1 gap-6 h-full'>
                 <div className='col-span-1 xl:row-span-3'>
