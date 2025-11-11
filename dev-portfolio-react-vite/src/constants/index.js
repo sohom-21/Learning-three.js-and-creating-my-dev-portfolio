@@ -271,23 +271,18 @@ export const expLogos = [
 
 export const socialImgs = [
   {
-    name: "insta",
-    url: "https://www.instagram.com/",
-    imgPath: "/images/insta.png",
-  },
-  {
     name: "fb",
-    url: "https://www.facebook.com/",
+    url: "https://www.facebook.com/share/1CQf5AEhMu/",
     imgPath: "/images/fb.png",
   },
   {
     name: "x",
-    url: "https://www.x.com/",
+    url: "https://x.com/SohomG17460?t=lbcqGvLjJgZVh51SMzhibg&s=09",
     imgPath: "/images/x.png",
   },
   {
     name: "linkedin",
-    url: "https://www.linkedin.com/",
+    url: "https://www.linkedin.com/in/sohom-ghosh-3894b130a",
     imgPath: "/images/linkedin.png",
   },
 ];
