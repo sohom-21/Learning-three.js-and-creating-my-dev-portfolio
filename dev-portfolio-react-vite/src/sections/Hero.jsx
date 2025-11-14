@@ -6,7 +6,7 @@ import CanvasLoader from "../components/CanvasLoader.jsx";
 // import {Leva, useControls} from "leva";
 import UseMediaQuery from "react-responsive/src/useMediaQuery.js";
 import {calculateSizesForDesk} from "../constants/index.js";
-import Target from "../components/Target.jsx";
+// import Target from "../components/Target.jsx";
 import ReactLogo from "../components/ReactLogo.jsx";
 import Cube from "../components/Cube.jsx";
 import Python from "../components/Python.jsx";
@@ -81,7 +81,7 @@ const Hero = () => {
                             />
                         </HeroCamera>
                         <group>
-                            <Target position={Sizes.targetPosition}/>
+                            {/* <Target position={Sizes.targetPosition}/> */}
                             <ReactLogo position={Sizes.reactLogoPosition} scale={Sizes.reactScale}/>
                             <Cube position={Sizes.cubePosition} scale={Sizes.CubeScale}/>
                             <InteractiveParticlesV2 position={Sizes.ringPosition}/>
